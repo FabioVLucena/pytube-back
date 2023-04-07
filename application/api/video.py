@@ -26,7 +26,13 @@ def searchVideoByTitle(title):
 @video.route('/download/<uuid>')
 def downloadSongByUrl(uuid):
     url = 'https://www.youtube.com/watch?' + uuid
-    video = YouTube(url)
-    title = video.title
-    return Response(json.dumps(title), mimetype='application/json')
+    
+    yt = YouTube(url)
+    audio = yt.streams.get_audio_only()
+    file_path = audio.download(output_path="../downloads")
+    
+    with open(file_path, 'rb') as video_file:
+        response = Response(video_file.read(), mimetype='video/mp4')
+
+    return response
 
