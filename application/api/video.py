@@ -32,7 +32,9 @@ def downloadSongByUrl(uuid):
     file_path = audio.download(output_path="../downloads")
     
     with open(file_path, 'rb') as video_file:
-        response = Response(video_file.read(), mimetype='video/mp4')
+        response = Response(video_file.read(), mimetype='audio/mp3')
+
+    response.headers.add('Access-Control-Allow-Origin', '*')
 
     return response
 
