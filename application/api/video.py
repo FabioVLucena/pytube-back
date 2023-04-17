@@ -20,8 +20,11 @@ def searchVideoByTitle(title):
         videoList.append(video.dict())
 
     videoListJson = json.dumps(videoList)
+    
+    response = Response(videoListJson, mimetype='application/json')
+    response.headers.add('Access-Control-Allow-Origin', '*')
 
-    return Response(videoListJson, mimetype='application/json')
+    return response
 
 @video.route('/download/<uuid>')
 def downloadSongByUrl(uuid):
