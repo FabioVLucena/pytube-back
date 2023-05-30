@@ -1,3 +1,4 @@
+import os
 from pytube import YouTube, Search
 from flask import Blueprint, Response
 from application.dataclass.video import Video
@@ -30,13 +31,15 @@ def searchVideoByTitle(title):
 def downloadSongByUrl(uuid):
     url = 'https://www.youtube.com/watch?' + uuid
     
-    yt = YouTube(url)
+    yt = YouTube(url, use_oauth=True, allow_oauth_cache=True)
     audio = yt.streams.get_audio_only()
     file_path = audio.download(output_path="../downloads")
     
     with open(file_path, 'rb') as video_file:
         response = Response(video_file.read(), mimetype='audio/mp3')
 
+    os.remove(file_path);
+    
     response.headers.add('Access-Control-Allow-Origin', '*')
 
     return response
